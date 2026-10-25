@@ -2679,16 +2679,18 @@ async function exportPDF() {
   }
 }
 
-
 /* ===================== Company logo ===================== */
 const LOGO_KEY = 'garmentCompanyLogo_v1';
+const DEFAULT_LOGO_FILE = 'logo.jpg'; // 👈 هنا تكتب اسم الصورة بالظبط زي ما هي مرفوعة على جيت هاب
 let companyLogoData = '';
+
 function applyLogo() {
   const img = document.getElementById('companyLogo'), slot = document.getElementById('logoSlot');
   if (!img || !slot) return;
   if (companyLogoData) { img.src = companyLogoData; slot.classList.add('has-logo'); }
   else { img.removeAttribute('src'); slot.classList.remove('has-logo'); }
 }
+
 function handleLogoUpload(ev) {
   const f = ev.target.files[0]; if (!f) return;
   const rd = new FileReader();
@@ -2701,15 +2703,51 @@ function handleLogoUpload(ev) {
       c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
       companyLogoData = c.toDataURL('image/png');
       try { localStorage.setItem(LOGO_KEY, companyLogoData); } catch (x) {}
-      applyLogo(); showToast('✓ Logo added');
+      applyLogo(); showToast('✓ Logo updated');
     };
     im.onerror = () => showToast('⚠ Could not read this image', 'error');
     im.src = e.target.result;
   };
   rd.readAsDataURL(f); ev.target.value = '';
 }
-function removeLogo() { companyLogoData = ''; localStorage.removeItem(LOGO_KEY); applyLogo(); showToast('Logo removed', 'info'); }
+
+function removeLogo() { 
+  companyLogoData = ''; 
+  localStorage.removeItem(LOGO_KEY); 
+  applyLogo(); 
+  // إعادة تحميل اللوجو الافتراضي من الملف
+  fetch(DEFAULT_LOGO_FILE)
+    .then(r => r.ok ? r.blob() : Promise.reject())
+    .then(blob => new Promise((res, rej) => {
+      const reader = new FileReader();
+      reader.onload = () => res(reader.result); reader.onerror = rej; reader.readAsDataURL(blob);
+    }))
+    .then(b64 => { companyLogoData = b64; localStorage.setItem(LOGO_KEY, b64); applyLogo(); })
+    .catch(() => {});
+  showToast('Logo reset to default', 'info'); 
+}
+
+// 1) جرب localStorage الأول (لو المستخدم رفع لوجو قبل كده)
 try { companyLogoData = localStorage.getItem(LOGO_KEY) || ''; } catch (x) {}
+
+// 2) لو مفيش، حمّل الملف من جيت هاب (logo.jpg)
+if (!companyLogoData) {
+  fetch(DEFAULT_LOGO_FILE, { cache: 'no-cache' })
+    .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.blob(); })
+    .then(blob => new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    }))
+    .then(b64 => {
+      companyLogoData = b64;
+      try { localStorage.setItem(LOGO_KEY, b64); } catch (x) {}
+      applyLogo();
+    })
+    .catch(err => console.warn('⚠ Logo not loaded:', err.message));
+}
+
 document.addEventListener('DOMContentLoaded', applyLogo);
 
 

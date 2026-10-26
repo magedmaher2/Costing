@@ -1152,7 +1152,7 @@ const COMPANY_LOGO_DEFAULT = '';
 // أو: ملف اللوجو بجانب index.html على GitHub (الافتراضي logo.jpg). فاضي = ما يستخدمش ملف.
 const COMPANY_LOGO_URL = 'logo.jpg';
 // رابط Apps Script Web App (غيّره هنا فقط. السطر لازم يفضل بالشكل ده من غير // في أوله):
-const GAS_URL_DEFAULT = 'https://script.google.com/macros/s/AKfycbyZG0cguArtHl9ZUuFWp2ljvoWTppSWEDuZd2RRGwL3XnW2jeFhRdHCPvDeqKARMgJmOQ/exec';
+const GAS_URL_DEFAULT = 'https://script.google.com/macros/s/AKfycbwH-XYWrAY7MCVrJ9i9s-Kw6uqPAIRSjYZ9EqChVaDuTVyKz9N7Y0zad766wm8fY0coeQ/exec';
 const STORAGE_KEYS = {
   master: 'garmentMasterData_v20',
   costing: 'garmentCostingData_v20',
@@ -1204,7 +1204,7 @@ const DEFAULT_MASTER = {
   ]
 };
 
-const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbzkklVe7QRVoqZ_I6vYXZGQrLmu-EOMZTuXrcgQ_LEKIh--2pjVOxdXUM1syqp58HIolQ/exec';
+const DEFAULT_GAS_URL = GAS_URL_DEFAULT;   // رابط واحد فقط: عدّله في السطر اللي فوق (GAS_URL_DEFAULT)
 const DEFAULT_SETTINGS = { gasUrl: DEFAULT_GAS_URL, minuteRate: 3.5, numberOfMinutes: 7.0 };
 
 let master = JSON.parse(JSON.stringify(DEFAULT_MASTER));
@@ -2256,7 +2256,11 @@ async function saveToGoogleSheets(scope) {
   costingState.updatedBy = currentUser;
   saveCostingLocal();
   saveSettingsSilent();
-  const image = productImageData ? await shrinkImage(productImageData) : '';
+  let image = productImageData ? await shrinkImage(productImageData) : '';
+  for (const [px, q] of [[400, 0.7], [320, 0.6], [240, 0.5]]) {          // خلية جوجل شيت أقصاها 50,000 حرف
+    if (image.length <= 48000) break;
+    image = await shrinkImage(productImageData, px, q);
+  }
   showToast('💾 Saving...', 'info');
   return api('save', { costing: costingState, totals: readTotals(), image: image })
     .then(() => showToast('✓ Saved successfully — ' + (costingState.style || costingState.id)))
@@ -2901,7 +2905,10 @@ function api(action, payload) {
   if (action !== 'login' && !(session && session.token)) return Promise.reject(Object.assign(new Error('Please sign in'), { code: 'AUTH' }));
   const body = JSON.stringify(Object.assign({ action: action, token: session && session.token }, payload || {}));
   return fetch(url, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: body })
-    .then(r => r.json())
+    .then(r => r.text().then(txt => {
+      try { return JSON.parse(txt); }
+      catch (x) { throw new Error('The server link did not return a valid answer. Check that the Web App is deployed (Execute as: Me, Who has access: Anyone) and that the link ends with /exec.'); }
+    }))
     .then(d => {
       if (d.status !== 'ok') {
         const e = new Error(d.message || 'Request failed'); e.code = d.code;

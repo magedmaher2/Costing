@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Garment Costing System</title>
 <style>
   * { box-sizing: border-box; }
@@ -382,6 +382,87 @@
   .pct-cell input { padding-right: 20px !important; }
   .pct-sign { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: #64748b; font-size: 12px; pointer-events: none; }
   @media print { .pct-sign { display: none !important; } .pct-cell input { padding-right: 0 !important; } }
+  /* ===================== Responsive: desktop · tablet · phone (screen only) ===================== */
+  @media screen {
+    html { -webkit-text-size-adjust: 100%; }
+    button, .logo-add, .chip { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+    .login-screen { overflow-y: auto; align-items: flex-start; } .login-card { margin: auto; }
+  }
+  @media screen and (max-width: 1180px) {                       /* tablet landscape / small laptop */
+    .model-block { grid-template-columns: 1fr 220px; }
+    .toolbar button { padding: 9px 12px; font-size: 12px; }
+    .top nav button { padding: 9px 14px; }
+  }
+  @media screen and (max-width: 900px) {                        /* tablet portrait */
+    body { padding: 10px; padding-left: max(10px, env(safe-area-inset-left)); padding-right: max(10px, env(safe-area-inset-right)); }
+    .top { flex-direction: column; align-items: stretch; padding: 16px 16px 30px; gap: 14px; }
+    .top nav { display: flex; flex-wrap: wrap; gap: 8px; }
+    .top nav button { flex: 1 1 110px; padding: 10px 8px; font-size: 12px; text-align: center; }
+    .model-block { grid-template-columns: 1fr; margin: 14px 10px; }
+    .model-right { border-left: 0; border-top: 1px solid var(--line); min-height: 170px; }
+    .img-placeholder { height: 150px; }
+    .model-row, .model-row.double, .model-row.minutes-row { grid-template-columns: 130px 1fr; }
+    .model-label { font-size: 11px; padding: 8px 10px; }
+    .model-sub { justify-content: flex-end; white-space: normal; font-size: 10px; padding: 6px 10px; border-top: 1px solid var(--line); border-left: 0; }
+    .model-row.double .model-value:nth-child(4) { border-top: 1px solid var(--line); }
+    .toolbar { padding: 10px 12px; gap: 8px; flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    .toolbar::-webkit-scrollbar { display: none; }
+    .toolbar button { flex: 0 0 auto; white-space: nowrap; }
+    .toolbar .spacer { display: none; }
+    .section, .summary { margin-left: 10px; margin-right: 10px; }
+    .section h2 { font-size: 13px; padding: 11px 12px; }
+    .section h2::after { content: "swipe ↔"; font-size: 10px; font-weight: 600; color: #94a3b8; letter-spacing: 0; }
+    .table-wrap { -webkit-overflow-scrolling: touch; }
+    table.cost { min-width: 920px; }
+    table.cost th:nth-last-child(1) { width: 56px; }
+    table.cost th:nth-last-child(2), table.cost th:nth-last-child(3) { width: 118px; }
+    table.cost:not(.adj-table) th:nth-last-child(4), table.cost:not(.adj-table) th:nth-last-child(5), table.cost.adj-table th:nth-last-child(4) { width: 96px; }
+    table.cost:not(.adj-table) th:nth-child(1) { width: 40px; }
+    table.cost th:nth-child(4):nth-last-child(6) { width: 104px; }
+    table.cost th { white-space: normal; overflow-wrap: anywhere; font-size: 10.5px; padding-left: 4px; padding-right: 4px; }
+    .cost input, .cost select { font-size: 14px; }
+    .summary td { padding: 9px 10px; }
+    .summary td:nth-child(2), .summary td:nth-child(3) { width: 112px; padding-right: 10px; }
+    .summary tr.pc td { font-size: 19px; padding: 13px 10px; } .summary tr.pc td:nth-child(2) { padding-right: 10px; }
+    .settings-grid { padding: 16px 12px; }
+    .flex-row { padding: 10px 12px; }
+    .users-add { padding: 12px; } .users-add-row .search-box { min-width: 140px; }
+    .users-table { min-width: 1050px; }
+    .modal-backdrop { padding: 8px; }
+    .modal { max-height: 92vh; }
+    .saved-table { font-size: 12px; } .saved-table th, .saved-table td { padding: 7px 6px; }
+    .toast { max-width: calc(100vw - 24px); white-space: normal; text-align: center; }
+    .status { left: 10px; bottom: 10px; font-size: 11px; padding: 6px 10px; }
+  }
+  @media screen and (max-width: 600px) {                        /* phone */
+    body { padding: 0; }
+    .wrap { border-radius: 0; border-left: 0; border-right: 0; box-shadow: none; }
+    .top { padding: 14px 14px 28px; }
+    .brand { gap: 12px; flex-wrap: wrap; }
+    .brand-title { gap: 10px; }
+    .top h1 { font-size: 16px; letter-spacing: .03em; }
+    #userChip { padding: 5px 11px; font-size: 12px; }
+    .logo-slot { height: 44px; min-width: 44px; }
+    .logo-img { max-height: 44px; max-width: 130px; padding: 4px 8px; }
+    .logo-add { height: 44px; padding: 0 10px; font-size: 11px; }
+    .top nav { gap: 6px; }
+    .top nav button { flex: 1 1 30%; font-size: 11px; padding: 9px 4px; }
+    .model-block { margin: 10px 8px; }
+    .model-row, .model-row.double, .model-row.minutes-row { grid-template-columns: 104px 1fr; }
+    .model-label { font-size: 10px; padding: 8px; }
+    .model-value input, .model-value select { font-size: 16px; }
+    .form-alert { margin: 10px 8px 0; }
+    .section, .summary { margin-left: 8px; margin-right: 8px; }
+    .master-table { font-size: 12px; }
+    .login-card { padding: 26px 18px 20px; }
+    .login-card input { font-size: 16px; }
+    .acc-grid .search-box, .users-add-row .search-box { font-size: 16px; }
+    .dup-actions { justify-content: stretch; } .dup-actions button { flex: 1; }
+    .toolbar { padding: 8px 10px; }
+    .status { display: none; }
+    .saved-table th:nth-child(4), .saved-table td:nth-child(4), .saved-table th:nth-child(5), .saved-table td:nth-child(5), .saved-table th:nth-child(7), .saved-table td:nth-child(7) { display: none; }
+    .saved-table td, .saved-table th { padding: 8px 4px; font-size: 11.5px; }
+  }
   .print-header, .print-footer { display: none; }
   .print-val { display: none; }
 </style>
@@ -1071,7 +1152,7 @@ const COMPANY_LOGO_DEFAULT = '';
 // أو: ملف اللوجو بجانب index.html على GitHub (الافتراضي logo.jpg). فاضي = ما يستخدمش ملف.
 const COMPANY_LOGO_URL = 'logo.jpg';
 // رابط Apps Script Web App (غيّره هنا فقط. السطر لازم يفضل بالشكل ده من غير // في أوله):
-const GAS_URL_DEFAULT = 'https://script.google.com/macros/s/AKfycbyoTL7pje9j9I8VbbjTxYc5SXjw7S3dMlaH-h0ntsfw1TmHMTxr0bd43aaBXj4KHNRSFw/exec';
+const GAS_URL_DEFAULT = 'https://script.google.com/macros/s/AKfycbzbIlRpZz7uS1BYoUmcU1yRpqFL_IEGfc054Ox_cnsiad4dpN0WwSuwg8M9KxW-ziXcbQ/exec';
 const STORAGE_KEYS = {
   master: 'garmentMasterData_v20',
   costing: 'garmentCostingData_v20',
@@ -1254,11 +1335,8 @@ function init() {
   updateDates();
   setInterval(updateDates, 60000);
   setTimeout(() => { renderAllMasterTables(); }, 500);
-  // كل مرة الملف يتفتح: يبدأ على صفحة الماستر، وخانات العميل / الـ Style / المقاس فاضية وتسعيرة جديدة
-  ['customer', 'style', 'size'].forEach(id => { document.getElementById(id).value = ''; });
-  collectCostingState();
-  costingState.id = ''; costingState.idKey = ''; costingState.createdBy = ''; costingState.updatedBy = '';
-  saveCostingLocal(); updateIdBadge();
+  // عند فتح الملف: ابدأ بتسعيرة فارغة، مع الإبقاء على المعادلات وبيانات Master Data.
+  resetCostingSheet();
   showPage('master');
   syncMasterFromGoogle(true);
 }
@@ -1321,7 +1399,7 @@ function collectCostingState() {
   costingState.style = document.getElementById('style').value;
   costingState.size = document.getElementById('size').value;
   costingState.currency = document.getElementById('currency').value;
-  costingState.rate = parseFloat(document.getElementById('rate').value) || 1;
+  costingState.rate = parseFloat(document.getElementById('rate').value) || 0;
   costingState.mode = document.getElementById('mode').value;
   costingState.mainMaterial = document.getElementById('mainMaterial').value;
   costingState.color = document.getElementById('color').value;
@@ -1412,22 +1490,38 @@ function loadCostingLocal() {
   }
 }
 
-function clearCosting() {
-  if (!confirm('Clear all current costing data?')) return;
-  document.getElementById('customer').value = '';
-  document.getElementById('style').value = '';
-  document.getElementById('size').value = '';
-  productImageData = '';
-  const preview = document.getElementById('imgPreview');
-  preview.src = ''; preview.classList.remove('show');
-  document.getElementById('imgPlaceholder').classList.remove('hidden');
-  localStorage.removeItem(STORAGE_KEYS.costing);
-  localStorage.removeItem(STORAGE_KEYS.image);
-  costingState.id = '';
-  costingState.idKey = '';
-  costingState.createdBy = '';
-  costingState.updatedBy = '';
-  updateIdBadge();
+function resetCostingSheet() {
+  // تفريغ مدخلات التسعير فقط؛ لا يتم تغيير أي خلية/عنصر محسوب أو معادلة.
+  ['customer', 'style', 'size'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+
+  // الحقول الرقمية القابلة للإدخال تبدأ من صفر، أما خلايا النتائج readonly فتظل كما تحسبها calc().
+  ['numberOfMinutes', 'minuteRate', 'rate'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '0';
+  });
+  document.querySelectorAll('#pageCosting input[type="number"]:not([readonly])').forEach(el => {
+    if (!el.disabled && !el.closest('.readonly')) el.value = '0';
+  });
+
+  // إفراغ الاختيارات المحددة في رأس ورقة التكلفة فقط، دون حذف خيارات القوائم أو بيانات الماستر.
+  ['mode', 'mainMaterial', 'color', 'currency', 'dyeingService', 'knittingService'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      if (id === 'mode') el.value = '';
+      else el.value = '';
+      if (el.value !== '') el.selectedIndex = -1;
+    }
+  });
+  const currencySymbolEl = document.getElementById('currencySymbol');
+  if (currencySymbolEl) currencySymbolEl.value = '';
+  const rateEl = document.getElementById('rate');
+  if (rateEl) rateEl.value = '0';
+
+  // إعادة صفوف التكلفة لحالة بداية جديدة عند فتح الملف أو استخدام CLEAR ALL.
+  // نفرغ بيانات الصفوف المحفوظة ثم نعيد إنشاء الصفوف، مع إبقاء أسماء البنود والمعادلات.
   costingState.fabricRows = [];
   costingState.trimRows = [];
   costingState.packRows = [];
@@ -1438,8 +1532,33 @@ function clearCosting() {
   renderPackRows();
   renderMfgRows();
   renderAdjRows();
+
+  // كل الخانات الرقمية القابلة للإدخال تبدأ بصفر؛ الخلايا المحسوبة readonly لا نكتب فوقها.
+  document.querySelectorAll('#pageCosting table.cost input[type="number"]:not([readonly])').forEach(el => {
+    if (!el.disabled) el.value = '0';
+  });
+
+  productImageData = '';
+  productImageHash = '';
+  const preview = document.getElementById('imgPreview');
+  if (preview) { preview.removeAttribute('src'); preview.classList.remove('show'); }
+  const placeholder = document.getElementById('imgPlaceholder');
+  if (placeholder) placeholder.classList.remove('hidden');
+
+  localStorage.removeItem(STORAGE_KEYS.costing);
+  localStorage.removeItem(STORAGE_KEYS.image);
+  costingState.id = '';
+  costingState.idKey = '';
+  costingState.createdBy = '';
+  costingState.updatedBy = '';
+  updateIdBadge();
   calc();
-  showToast('✓ Costing cleared', 'info');
+}
+
+function clearCosting() {
+  if (!confirm('Clear all current costing data?')) return;
+  resetCostingSheet();
+  showToast('✓ Costing cleared — numeric inputs set to 0', 'info');
 }
 
 function handleImageUpload(event) {
@@ -1472,14 +1591,18 @@ function populateCurrencyDropdown() {
   const sel = document.getElementById('currency');
   const current = sel.value;
   sel.innerHTML = '';
+  const blankCurrency = document.createElement('option');
+  blankCurrency.value = ''; blankCurrency.textContent = '';
+  sel.appendChild(blankCurrency);
   master.currencies.forEach(c => {
     const o = document.createElement('option');
     o.value = c.code; o.textContent = `${c.code} — ${c.name}`;
     sel.appendChild(o);
   });
   if (current && master.currencies.some(c => c.code === current)) sel.value = current;
-  else sel.value = 'USD';
-  updateRateFromCurrency();
+  else sel.value = '';
+  if (!sel.value) { document.getElementById('rate').value = '0'; document.getElementById('currencySymbol').value = ''; }
+  else updateRateFromCurrency();
 }
 function updateRateFromCurrency() {
   const code = document.getElementById('currency').value;
@@ -1499,6 +1622,9 @@ function populateMaterialDropdown() {
   const sel = document.getElementById('mainMaterial');
   const current = sel.value;
   sel.innerHTML = '';
+  const blankMaterial = document.createElement('option');
+  blankMaterial.value = ''; blankMaterial.textContent = '';
+  sel.appendChild(blankMaterial);
   const mode = document.getElementById('mode').value;
   if (mode === 'FABRIC') {
     master.fabrics.forEach(f => {
@@ -1520,6 +1646,9 @@ function populateServiceDropdowns() {
   const dyeingSel = document.getElementById('dyeingService');
   const curDye = dyeingSel.value;
   dyeingSel.innerHTML = '';
+  const blankDyeing = document.createElement('option');
+  blankDyeing.value = ''; blankDyeing.textContent = '';
+  dyeingSel.appendChild(blankDyeing);
   master.dyeing.forEach(d => {
     const o = document.createElement('option');
     o.value = d.name; o.textContent = `${d.name} (${d.price})`;
@@ -1534,6 +1663,9 @@ function populateKnittingDropdown() {
   if (!sel) return;
   const current = sel.value;
   sel.innerHTML = '';
+  const blankKnitting = document.createElement('option');
+  blankKnitting.value = ''; blankKnitting.textContent = '';
+  sel.appendChild(blankKnitting);
   master.knitting.forEach(k => {
     const o = document.createElement('option');
     o.value = k.name; o.textContent = `${k.name} (${k.price})`;
@@ -1852,10 +1984,13 @@ function calc() {
     packTotalDZ += cd;
   });
 
-  const minutesSetting = parseFloat(document.getElementById('numberOfMinutes').value) || 7.0;
-  const minuteRate = parseFloat(document.getElementById('minuteRate').value) || 3.5;
-  const autoConsum = minutesSetting * 12;
-  const autoPrice = minuteRate / rate;
+  // CUT & MAKE (C.M): keep zero as a valid input and calculate from the header fields.
+  const minutesInput = parseFloat(document.getElementById('numberOfMinutes').value);
+  const minuteRateInput = parseFloat(document.getElementById('minuteRate').value);
+  const minutesSetting = Number.isFinite(minutesInput) ? minutesInput : 0;
+  const minuteRate = Number.isFinite(minuteRateInput) ? minuteRateInput : 0;
+  const autoConsum = minutesSetting * 12;          // DZ CONSUM. = NUMBER OF MINUTES × 12
+  const autoPrice = rate > 0 ? minuteRate / rate : 0; // U/PRICE = PRICE PER MINUTE (USD) / currency rate
   let mfgTotalDZ = 0;
   document.querySelectorAll('#mfgRows tr').forEach(tr => {
     const consumCell = tr.querySelector('.consum');
@@ -3038,6 +3173,21 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('visibilitychange', () => { if (!document.hidden) onReturn(); });
 });
 
+
+
+// Run the exact CLEAR ALL reset action once startup has finished restoring saved UI state.
+// This intentionally clears only the current costing sheet; Master Data remains untouched.
+document.addEventListener('DOMContentLoaded', () => {
+  window.setTimeout(() => {
+    try {
+      if (typeof resetCostingSheet === 'function') resetCostingSheet();
+      // Ensure master dropdown refresh/restoration cannot reselect the old YARN, dyeing service, USD, or rates.
+      window.setTimeout(() => {
+        if (typeof resetCostingSheet === 'function') resetCostingSheet();
+      }, 2500);
+    } catch (err) { console.error('CLEAR ALL on open failed:', err); }
+  }, 1200);
+});
 </script>
 </body>
 </html>

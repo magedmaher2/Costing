@@ -2,7 +2,7 @@
    - يخزّن الصفحة والملفات الأساسية عشان التطبيق يفتح من غير نت
    - الصفحة نفسها: الشبكة أولاً (التحديثات توصل فوراً)، ولو مفيش نت يفتح من النسخة المخزنة
    - طلبات جوجل (Apps Script) ما بنلمسهاش أبداً: دي بتروح للسيرفر مباشرة */
-const CACHE = 'gc-shell-v1';
+const CACHE = 'gc-shell-v2';   // غيّر الرقم ده (v3, v4...) كل ما ترفع نسخة جديدة من index.html
 const CORE = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png', './logo.jpg'];
 
 self.addEventListener('install', e => {
@@ -27,7 +27,8 @@ function networkFirst(req, timeoutMs) {
     const fallback = () => caches.match(req, { ignoreSearch: true })
       .then(r => r || caches.match('./index.html')).then(r => r || caches.match('./'));
     const timer = setTimeout(() => { fallback().then(r => { if (r && !settled) { settled = true; resolve(r); } }); }, timeoutMs);
-    fetch(req).then(res => {
+    // cache:'no-cache' = المتصفح لازم يسأل السيرفر لو الملف اتغيّر (بدل ما يرجّع نسخة قديمة من كاش المتصفح/GitHub لحد 10 دقايق)
+    fetch(req.url, { cache: 'no-cache' }).then(res => {
       if (res && res.ok) { const copy = res.clone(); caches.open(CACHE).then(c => c.put(req, copy)); }
       if (!settled) { settled = true; clearTimeout(timer); resolve(res); }
     }).catch(() => {
@@ -53,6 +54,6 @@ self.addEventListener('fetch', e => {
   const url = new URL(req.url);
   if (/(^|\.)script\.google\.com$|(^|\.)googleusercontent\.com$/.test(url.hostname)) return;   // API: مباشرة
   if (url.pathname.endsWith('/exec')) return;
-  if (req.mode === 'navigate') { e.respondWith(networkFirst(req, 4000)); return; }
+  if (req.mode === 'navigate') { e.respondWith(networkFirst(req, 15000)); return; }
   e.respondWith(staleWhileRevalidate(req));
 });
